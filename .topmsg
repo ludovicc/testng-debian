@@ -1,0 +1,6 @@
+From: Marcus Better <marcus@better.se>
+Subject: [PATCH] debian/build-without-dtddoc
+
+Allow building without DTDDoc.
+
+Signed-off-by: Marcus Better <marcus@better.se>
