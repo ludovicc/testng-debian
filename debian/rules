@@ -1,5 +1,8 @@
 #!/usr/bin/make -f
 
+include /usr/share/quilt/quilt.make
+-include /usr/share/topgit/tg2quilt.mk
+
 DEB_BUILD_ARCH := $(shell dpkg-architecture -qDEB_BUILD_ARCH)
 
 ifeq ($(DEB_BUILD_ARCH),s390)
@@ -24,7 +27,7 @@ INSTALL_DIR	:= $(CURDIR)/debian/$(PKG)
 JAVA_LIB_DIR := $(INSTALL_DIR)/usr/share/java
 
 build: build-stamp
-build-stamp:
+build-stamp: patch
 	dh build
 	$(ANT) compile-15 compile-14 dist-no3rdparty javadocs
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
@@ -32,7 +35,7 @@ ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 endif
 	touch build-stamp
 
-clean:
+clean: unpatch
 	dh clean
 	$(ANT) clean
 	rm -rf javadocs test-output build test/ant/build test/ant/test-output
