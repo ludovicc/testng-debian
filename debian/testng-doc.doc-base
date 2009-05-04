@@ -1,0 +1,9 @@
+Document: testng
+Title: API Javadoc for TestNG
+Author: TestNG developers
+Abstract: API documentation for the TestNG testing framework
+Section: Programming
+
+Format: HTML
+Index: /usr/share/doc/testng/api/index.html
+Files: /usr/share/doc/testng/api/*

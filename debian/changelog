@@ -1,0 +1,5 @@
+testng (5.9+dfsg-1) unstable; urgency=low
+
+  * Initial release. (Closes: #465326)
+
+ -- Marcus Better <marcus@better.se>  Mon, 04 May 2009 10:47:43 +0200

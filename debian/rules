@@ -1,0 +1,62 @@
+#!/usr/bin/make -f
+
+DEB_BUILD_ARCH := $(shell dpkg-architecture -qDEB_BUILD_ARCH)
+
+ifeq ($(DEB_BUILD_ARCH),s390)
+	JAVA_HOME := /usr/lib/jvm/java-6-cacao
+else
+	JAVA_HOME := /usr/lib/jvm/java-6-openjdk
+endif
+
+DEB_JARS 	:= ant ant-launcher ant-junit ant-trax com-sun-javadoc
+
+DEB_CLASSPATH = $(shell for jar in $(DEB_JARS:%=/usr/share/java/%.jar); do \
+				echo -n $${jar}:; done; \
+				echo -n $(JAVA_HOME)/lib/tools.jar)
+
+VERSION		:= $(shell dpkg-parsechangelog | grep ^Version: | cut -d' ' -f2 | cut -d- -f1 | cut -d+ -f1)
+ANT_ARGS	:= -propertyfile debian/ant.properties -Dtestng.version=$(VERSION)
+ANT			:= $(JAVA_HOME)/bin/java -classpath $(DEB_CLASSPATH) \
+				org.apache.tools.ant.Main $(ANT_ARGS)
+
+PKG			:= testng
+INSTALL_DIR	:= $(CURDIR)/debian/$(PKG)
+JAVA_LIB_DIR := $(INSTALL_DIR)/usr/share/java
+
+build: build-stamp
+build-stamp:
+	dh build
+	$(ANT) compile-15 compile-14 dist-no3rdparty javadocs
+ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
+	$(ANT) test-15 test-15-jdk14 test-ant
+endif
+	touch build-stamp
+
+clean:
+	dh clean
+	$(ANT) clean
+	rm -rf javadocs test-output build test/ant/build test/ant/test-output
+
+install: build install-stamp
+install-stamp:
+	dh install --before dh_compress
+	dh_compress -X.js
+	dh install --remaining
+	for jdk in 14 15; do \
+	  install -m 644 $(PKG)-jdk$$jdk.jar $(JAVA_LIB_DIR)/$(PKG)-jdk$$jdk-$(VERSION).jar; \
+	  ln -s $(PKG)-jdk$$jdk-$(VERSION).jar $(JAVA_LIB_DIR)/$(PKG)-jdk$$jdk.jar; \
+	done
+	ln -s $(PKG)-jdk15.jar $(JAVA_LIB_DIR)/$(PKG).jar
+	mv $(INSTALL_DIR)-doc/usr/share/doc/$(PKG)-doc/javadocs $(INSTALL_DIR)-doc/usr/share/doc/$(PKG)/api
+	mv $(INSTALL_DIR)-doc/usr/share/doc/$(PKG)-doc/examples $(INSTALL_DIR)-doc/usr/share/doc/$(PKG)
+	touch install-stamp
+
+binary-arch: install
+	dh binary-arch
+
+binary-indep: install
+	dh binary-indep
+
+binary: binary-indep binary-arch
+
+.PHONY: build clean binary-indep binary-arch binary install

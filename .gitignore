@@ -1,0 +1,14 @@
+*~
+*.jar
+build/
+test/build/
+javadocs/
+test-output
+test-output-tests
+*-stamp
+debian/testng/
+debian/testng-doc/
+debian/*.log
+debian/*.debhelper
+debian/*.substvars
+debian/files

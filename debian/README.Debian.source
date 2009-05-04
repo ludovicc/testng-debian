@@ -1,0 +1,17 @@
+The source tarball was created from the upstream Subversion repository
+[1]. The following files and directories were removed because they are
+likely to contain non-free code:
+
+* gigaspaces/3rdparty/JSpaces.jar
+* gigaspaces/3rdparty/jini/jsk-lib.jar
+* gigaspaces/3rdparty/jini/jsk-platform.jar
+* reports/js/ext
+
+Also, these directories containing binary third-party libraries were removed:
+
+ * 3rdparty
+ * gigaspaces/3rdparty
+ * lib
+ * spring/3rdparty
+
+[1] http://code.google.com/p/testng/source/checkout

@@ -1,0 +1,44 @@
+Source: testng
+Section: devel
+Priority: optional
+Maintainer: Debian Java Maintainers <pkg-java-maintainers@lists.alioth.debian.org>
+Uploaders: Marcus Better <marcus@better.se>
+Build-Depends: debhelper (>= 7), ant
+Build-Depends-Indep: openjdk-6-jdk [!s390], cacao-oj6-jdk [s390], ant-optional, junit, bsh, libqdox-java, libbackport-util-concurrent-java
+Standards-Version: 3.8.1
+Homepage: http://testng.org
+Vcs-Git: git://git.debian.org/git/pkg-java/testng.git
+Vcs-Browser: http://git.debian.org/?p=pkg-java/testng.git
+
+Package: testng
+Architecture: all
+Depends: ${misc:Depends}, default-jre-headless | java2-runtime-headless, bsh, libqdox-java
+Recommends: libbackport-util-concurrent-java
+Suggests: java-virtual-machine, ant, ant-optional, testng-doc
+Description: testing framework for Java
+ TestNG is a testing framework inspired by JUnit and NUnit but
+ introducing some new functionalities that make it more powerful and
+ easier to use, such as:
+ .
+     * JDK 5 annotations
+     * Flexible test configuration
+     * Support for data-driven testing
+     * Support for parameters
+     * Distribution of tests on slave machines
+     * Powerful execution model (no more TestSuite)
+     * Embeds BeanShell for further flexibility
+ .
+ TestNG is designed to cover all categories of tests, including unit,
+ functional, end-to-end and integration tests.
+
+Package: testng-doc
+Section: doc
+Architecture: all
+Depends: ${misc:Depends}
+Suggests: testng
+Description: documentation for TestNG
+ This package contains the API documentation and samples for TestNG.
+ .
+ TestNG is a testing framework inspired by JUnit and NUnit but
+ introducing some new functionalities that make it more powerful and
+ easier to use.
