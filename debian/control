@@ -1,14 +1,13 @@
 Source: testng
 Section: devel
 Priority: optional
-Maintainer: Debian Java Maintainers <pkg-java-maintainers@lists.alioth.debian.org>
-Uploaders: Marcus Better <marcus@better.se>
+Maintainer: Marcus Better <marcus@better.se>
 Build-Depends: debhelper (>= 7), ant
 Build-Depends-Indep: openjdk-6-jdk [!s390], cacao-oj6-jdk [s390], ant-optional, junit, bsh, libqdox-java, libbackport-util-concurrent-java
 Standards-Version: 3.8.1
 Homepage: http://testng.org
-Vcs-Git: git://git.debian.org/git/pkg-java/testng.git
-Vcs-Browser: http://git.debian.org/?p=pkg-java/testng.git
+Vcs-Git: git://git.debian.org/git/collab-maint/testng.git
+Vcs-Browser: http://git.debian.org/?p=collab-maint/testng.git
 
 Package: testng
 Architecture: all
