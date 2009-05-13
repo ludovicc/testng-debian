@@ -37,6 +37,7 @@ endif
 
 clean: unpatch
 	dh clean
+	rm -f build-stamp install-stamp
 	$(ANT) clean
 	rm -rf javadocs test-output build test/ant/build test/ant/test-output
 
