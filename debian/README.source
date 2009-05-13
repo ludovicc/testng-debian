@@ -1,0 +1,57 @@
+Building TestNG for Debian
+--------------------------
+
+This package uses quilt to apply and remove its patches. Please refer
+to /usr/share/doc/quilt/README.source for information about how to use
+quilt for source packages.
+
+The quilt series is generated from the Git repository using
+TopGit. This process is documented in
+/usr/share/doc/topgit/HOWTO-tg2quilt.gz . The repository uses the
+branch layout described in the aforementioned document.
+
+
+Checking out the sources
+------------------------
+
+Use the "debcheckout" command to check out the git repository. This
+will set up the clone for TopGit properly.
+
+You can also track the upstream svn repository with git-svn. This is
+not necessary to build the package, but it is needed if you want to
+update the package for a new upstream version. In this case, the
+following steps are necessary:
+
+1. debcheckout testng
+2. cd testng
+3. git config --add remote.origin.fetch +refs/remotes/*:refs/remotes/*
+5. git fetch
+4. git svn init -s http://testng.googlecode.com/svn
+6. git svn fetch
+
+The last step will take a minute or so for git-svn to rebuild its index.
+
+
+Building the source tarball
+---------------------------
+
+The source tarball was created from the upstream Subversion repository
+[1]. The following files and directories were removed because they are
+likely to contain non-free code:
+
+* gigaspaces/3rdparty/JSpaces.jar
+* gigaspaces/3rdparty/jini/jsk-lib.jar
+* gigaspaces/3rdparty/jini/jsk-platform.jar
+* reports/js/ext
+
+Also, these directories containing binary third-party libraries were removed:
+
+ * 3rdparty
+ * gigaspaces/3rdparty
+ * lib
+ * spring/3rdparty
+
+
+[1] http://testng.googlecode.com/svn
+
+ -- Marcus Better <marcus@better.se>, Wed, 13 May 2009 10:49:17 +0200
