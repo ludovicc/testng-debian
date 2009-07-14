@@ -1,3 +1,14 @@
+testng (5.9+dfsg-1.1) experimental; urgency=low
+
+  * Change section to java
+  * Add the Maven POM to the package
+  * Add a Build-Depends-Indep dependency on maven-repo-helper
+  * Use mh_installpom and mh_installjar to install the POM and the jar to the
+    Maven repository
+  * Added a patch to support qdox 1.9
+
+ -- Ludovic Claude <ludovic.claude@laposte.net>  Thu, 28 May 2009 22:08:35 +0100
+
 testng (5.9+dfsg-1) unstable; urgency=low
 
   * Initial release. (Closes: #465326)

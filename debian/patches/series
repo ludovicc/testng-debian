@@ -1,0 +1,5 @@
+debian/exclude-3rdparty-jars.diff 
+debian/stop-on-test-failure.diff -p1
+debian/qdox1_9.diff
+debian/pom_version.diff
+

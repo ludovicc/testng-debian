@@ -1,0 +1,26 @@
+From: Marcus Better <marcus@better.se>
+Subject: [PATCH] debian/stop-on-test-failure
+
+Stop the build if there are any failed tests.
+
+Signed-off-by: Marcus Better <marcus@better.se>
+
+---
+ test/build.xml |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/test/build.xml b/test/build.xml
+index a0802ca..7f97bdf 100644
+--- a/test/build.xml
++++ b/test/build.xml
+@@ -85,7 +85,7 @@ TESTNG.REPORT.DIR=${testng.report.dir}
+   <target name="run" description="Run tests" depends="compile">
+ 		<echo message="                                 -- Running JDK 1.5 tests --"/>
+ 		<echo message="                                 -- ${jdk15.testng.jar} --" />
+-		<testng classpathref="run.cp"
++		<testng classpathref="run.cp" haltonfailure="true"
+             outputdir="${testng.report.dir}">
+ 			<xmlfileset dir="${test15.dir}" includes="testng.xml"/>
+ 		</testng>
+-- 
+tg: (f522334..) debian/stop-on-test-failure (depends on: master)

@@ -1,0 +1,46 @@
+--- a/src/main/org/testng/internal/AnnotationTestConverter.java
++++ b/src/main/org/testng/internal/AnnotationTestConverter.java
+@@ -115,7 +115,7 @@
+     Class<IAnnotation> annotationClass= m_annotationMap.get(tag.getName());
+     if(annotationClass == null) {
+       ppp("Found unknown testng annotation " + tag.getName() + " in file "
+-          + tag.getContext().getSource().getFile().getAbsolutePath() + " at line "
++          + tag.getContext().getParent().getParentSource().getFile().getAbsolutePath() + " at line "
+           + tag.getLineNumber());
+ 
+       // preserve the information - but it looks like an invalid tag
+@@ -128,7 +128,7 @@
+     }
+     catch(Exception e) {
+       ppp("Found unknown testng parameter " + key + " in annotation " + tag.getName() + " in file "
+-          + tag.getContext().getSource().getFile().getAbsolutePath() + " at line "
++          + tag.getContext().getParent().getParentSource().getFile().getAbsolutePath() + " at line "
+           + tag.getLineNumber());
+ 
+       // preserve the information - but it looks like an invalid parameter
+@@ -278,8 +278,12 @@
+         List<String> finalLines= insertAnnotations(source, lines);
+ 
+         if(finalLines.size() > lineCount) {
+-          ppp("Writing file " + file.getAbsolutePath());
+-          writeFile(file, source.getPackage(), finalLines);
++          ppp("Writing file " + file.getAbsolutePath());
++          if (source.getPackage() == null) {
++            writeFile(file, null, finalLines);
++          } else {
++            writeFile(file, source.getPackage().getName(), finalLines);
++          }
+           converted++;
+         }
+       }
+--- a/pom.xml
++++ b/pom.xml
+@@ -228,7 +228,7 @@
+         <dependency>
+             <groupId>qdox</groupId>
+             <artifactId>qdox</artifactId>
+-            <version>1.6.1</version>
++            <version>1.9</version>
+             <scope>provided</scope>
+         </dependency>
+         <dependency>

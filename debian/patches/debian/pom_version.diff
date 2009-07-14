@@ -1,0 +1,11 @@
+--- a/pom.xml
++++ b/pom.xml
+@@ -40,7 +40,7 @@
+     <groupId>org.testng</groupId>
+     <artifactId>testng</artifactId>
+     <name>TestNG</name>
+-    <version>5.6</version>
++    <version>5.9</version>
+     <description>TestNG is a unit testing framework.</description>
+     <url>http://testng.org</url>
+     

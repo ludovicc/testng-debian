@@ -1,9 +1,10 @@
 Source: testng
-Section: devel
+Section: java
 Priority: optional
 Maintainer: Marcus Better <marcus@better.se>
 Build-Depends: debhelper (>= 7), quilt, ant
-Build-Depends-Indep: openjdk-6-jdk [!s390], cacao-oj6-jdk [s390], ant-optional, junit, bsh, libqdox-java, libbackport-util-concurrent-java
+Build-Depends-Indep: openjdk-6-jdk [!s390], cacao-oj6-jdk [s390], ant-optional, junit, bsh, libqdox-java, 
+ libbackport-util-concurrent-java, maven-repo-helper
 Standards-Version: 3.8.1
 Homepage: http://testng.org
 Vcs-Git: git://git.debian.org/git/collab-maint/testng.git

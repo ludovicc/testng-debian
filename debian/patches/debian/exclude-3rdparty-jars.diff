@@ -1,0 +1,135 @@
+From: Marcus Better <marcus@better.se>
+Subject: [PATCH] debian/exclude-3rdparty-jars
+
+Do not include third-party libraries in the jar file.
+
+Signed-off-by: Marcus Better <marcus@better.se>
+
+---
+ build.xml          |   25 +++++++++++++++++++++++++
+ test/ant/build.xml |   16 +++++++++++++---
+ 2 files changed, 38 insertions(+), 3 deletions(-)
+
+--- a/build.xml
++++ b/build.xml
+@@ -134,6 +134,7 @@
+ 
+     <javac classpathref="compile2.cp"
+            verbose="false"
++           source="1.5"
+            target="1.5"
+            debug="true"
+            optimize="${optimize}"
+@@ -289,6 +290,32 @@
+     </jar>
+   </target>
+ 
++  <target name="dist-no3rdparty" depends="dist-15-no3rdparty,dist-14-no3rdparty"/>
++
++  <target name="dist-14-no3rdparty">
++    <delete quiet="true" file="${jdk14.testng.jar}" />
++    <jar destfile="${jdk14.testng.jar}">
++      <manifest>
++        <attribute name="Main-Class" value="org.testng.TestNG" />
++      	<attribute name="Implementation-Version" value="${testng.version}-${DSTAMP}${TSTAMP}" />
++        <attribute name="Class-Path" value="/usr/share/java/qdox.jar /usr/share/java/bsh.jar /usr/share/java/concurrent.jar" />
++      </manifest>
++      <fileset dir="${build.jdk14.dir}" />
++    </jar>
++  </target>
++
++  <target name="dist-15-no3rdparty">
++    <delete quiet="true" file="${jdk15.testng.jar}" />
++    <jar destfile="${jdk15.testng.jar}">
++      <manifest>
++        <attribute name="Main-Class" value="org.testng.TestNG" />
++      	<attribute name="Implementation-Version" value="${testng.version}-${DSTAMP}${TSTAMP}" />
++        <attribute name="Class-Path" value="/usr/share/java/qdox.jar /usr/share/java/bsh.jar /usr/share/java/concurrent.jar" />
++      </manifest>
++      <fileset dir="${build.jdk15.dir}" />
++    </jar>
++  </target>
++
+   <target name="dist-all-zip" depends="dist-prepare,dist-jar,javadocs">
+   	<property name="zip.dir" value="testng-${testng.version}" />
+     <zip zipfile="${testng.zip}">
+@@ -338,8 +365,8 @@
+     <copy file="${jdk15.testng.jar}" tofile="${jdk15.jar}" />
+   </target>
+ 
+-  <taskdef name="DTDDoc" classname="DTDDoc.DTDDocTask"
+-     classpath="lib/DTDDoc.jar"/>
++<!--  <taskdef name="DTDDoc" classname="DTDDoc.DTDDocTask"
++     classpath="lib/DTDDoc.jar"/> -->
+ 
+   <target name="dtd">
+     <DTDDoc showHiddenTags="false"
+--- a/test/ant/build.xml
++++ b/test/ant/build.xml
+@@ -4,6 +4,16 @@
+   <property name="this.directory" value="test/ant" />
+   <property name="test-output" value="${this.directory}/test-output" />
+ 
++  <path id="run.cp">
++      <fileset dir="${lib.dir}">
++        <include name="${beanshell.jar}" />
++        <include name="${qdox.jar}" />
++      </fileset>
++      <pathelement location="${this.directory}/build"/>
++      <pathelement location="${jdk15.testng.jar}"/>
++      <pathelement location="${java.home}/../lib/tools.jar"/>
++  </path>
++
+   <taskdef name="testng" classname="org.testng.TestNGAntTask" 
+   	classpath="${jdk15.testng.jar}" />
+ 
+@@ -24,7 +34,7 @@
+ 	<delete failonerror="false">
+ 	<fileset dir="${test-output}" includes="**"/></delete>
+   	
+-    <testng classpath="${this.directory}/build;${jdk15.testng.jar}"
++    <testng classpathref="run.cp"
+             outputdir="${test-output}"
+   	    parallel="methods"
+   	    threadcount="5"
+@@ -42,7 +52,7 @@
+   	<fail unless="test.exists" 
+   		message="The appropriately named output should have been created"/>
+   	
+-    <testng classpath="${this.directory}/build;${jdk15.testng.jar}"
++    <testng classpathref="run.cp"
+             outputdir="${test-output}"
+ 	   	listeners = "org.testng.reporters.FailedReporter, org.testng.reporters.DotTestListener"
+     	haltonfailure="true"
+@@ -59,7 +69,7 @@
+   	<fail unless="test2.exists" message="The appropriately named output should have been created"/>
+   	
+   	<!-- Ensure standard tests get run -->
+-    <testng classpath="${this.directory}/build;${jdk15.testng.jar}"
++    <testng classpathref="run.cp"
+             outputdir="${test-output}"
+     	listeners = "org.testng.reporters.FailedReporter, org.testng.reporters.DotTestListener"
+     	haltonfailure="true"
+--- a/build.properties
++++ b/build.properties
+@@ -7,16 +7,16 @@
+ 
+ #classes=${build.dir}
+ 
+-lib.dir=${basedir}/3rdparty
++lib.dir=/usr/share/java
+ src.dir=${basedir}/src
+ example.dir=${basedir}/examples
+ 
+ #
+ # Jar files
+ #
+-beanshell.jar=bsh-2.0b4.jar
+-qdox.jar=qdox-1.6.1.jar
+-concurrent.jar=backport-util-concurrent-2.2.jar
++beanshell.jar=bsh.jar
++qdox.jar=qdox.jar
++concurrent.jar=backport-util-concurrent.jar
+ 
+ #
+ # Names of distributions
