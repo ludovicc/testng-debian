@@ -49,8 +49,12 @@ install-stamp:
 	dh_compress -X.js
 	dh install --remaining
 	mh_installpoms -p$(PKG)
-	mh_installjar -p$(PKG) --classifier=jdk14 -l --usj-name=$(PKG)-jdk14 pom.xml $(PKG)-jdk14.jar
-	mh_installjar -p$(PKG) --classifier=jdk15 -l --usj-name=$(PKG)-jdk15 pom.xml $(PKG)-jdk15.jar usr/share/java/$(PKG).jar
+	for jdk in 14 15; do \
+	  install -m 644 $(PKG)-jdk$$jdk.jar $(JAVA_LIB_DIR)/$(PKG)-jdk$$jdk-$(VERSION).jar; \
+	  ln -s $(PKG)-jdk$$jdk-$(VERSION).jar $(JAVA_LIB_DIR)/$(PKG)-jdk$$jdk.jar; \
+	  mh_linkjar -p$(PKG) --classifier=jdk$$jdk pom.xml usr/share/java/$(PKG)-jdk$$jdk-$(VERSION).jar; \
+	done
+	ln -s $(PKG)-jdk15.jar $(JAVA_LIB_DIR)/$(PKG).jar
 	mv $(INSTALL_DIR)-doc/usr/share/doc/$(PKG)-doc/javadocs $(INSTALL_DIR)-doc/usr/share/doc/$(PKG)/api
 	mv $(INSTALL_DIR)-doc/usr/share/doc/$(PKG)-doc/examples $(INSTALL_DIR)-doc/usr/share/doc/$(PKG)
 	touch install-stamp
